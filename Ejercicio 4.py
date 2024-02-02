@@ -8,7 +8,7 @@ pygame.display.set_caption("Ejemplo 4")
 #Cargamos el fondo de la ventana
 fondo = pygame.image.load("fondo.jpg")
 ventana.blit(fondo, (0,0))
-
+game_over = pygame.image.load("game-over.png")
 ball = pygame.image.load("ball.png")
 ballrect = ball.get_rect()
 #Nos introduce una velocidad distinta de la pelota
@@ -41,8 +41,11 @@ while jugando:
         speed[0] = -speed[0]
     if ballrect.top < 0: 
         speed[1] = -speed[1]
+    #Nos indica que al tocar abajo ya no rebota más
     if ballrect.bottom > ventana.get_height():
-        ventana.fill((211, 41, 41))
+        ventana.fill((0, 0, 0))
+        ventana.blit(game_over, (0, 0))
+        #Aquí introduce el texto de perder
         texto = fuente.render("Has Muerto", True, (255,255,255))
         texto_rect = texto.get_rect()
         texto_x = ventana.get_width() / 2 - texto_rect.width / 2
