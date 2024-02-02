@@ -42,11 +42,13 @@ while jugando:
     if ballrect.top < 0: 
         speed[1] = -speed[1]
     if ballrect.bottom > ventana.get_height():
-        texto = fuente.render("Game Over", True, (125,125,125))
+        ventana.fill((211, 41, 41))
+        texto = fuente.render("Has Muerto", True, (255,255,255))
         texto_rect = texto.get_rect()
         texto_x = ventana.get_width() / 2 - texto_rect.width / 2
         texto_y = ventana.get_height() / 2 - texto_rect.height / 2
         ventana.blit(texto, [texto_x, texto_y])
+        
     else:
         ventana.fill((252, 243, 207))
         ventana.blit(fondo, (0,0))
