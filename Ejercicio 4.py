@@ -1,5 +1,5 @@
 import pygame
-from random import randint
+from random import randint, uniform
 
 pygame.init()
 ventana = pygame.display.set_mode((1200,673))
@@ -19,7 +19,8 @@ ballrect.move_ip(0,0)
 barra = pygame.image.load("bate.png")
 barrarect = barra.get_rect()
 barrarect.move_ip(600,600)
-
+golpes = 4
+golpes_barra = 0
 fuente = pygame.font.Font(None, 36)
 
 jugando = True
@@ -35,6 +36,11 @@ while jugando:
 
     if barrarect.colliderect(ballrect):
         speed[1] = -speed[1]
+        #Aquí hacemos que cada 4 golpes la velocidad de la bola
+        #aumente un 20 por ciento 
+        golpes_barra = golpes_barra + 1
+        if golpes_barra % golpes == 0:
+            speed[0] *= 1.2
 
     ballrect = ballrect.move(speed)
     if ballrect.left < 0 or ballrect.right > ventana.get_width():
@@ -60,7 +66,7 @@ while jugando:
 
     if barrarect.left < 0:
        barrarect = barrarect.move(4,0)
-    if barrarect.right > ventana.get_width():
+    if barrarect.right > 1200:
         barrarect = barrarect.move(-4,0)
     
     pygame.display.flip()
