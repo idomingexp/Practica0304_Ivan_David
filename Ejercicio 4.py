@@ -13,7 +13,7 @@ ball = pygame.image.load("ball.png")
 ballrect = ball.get_rect()
 #Nos introduce una velocidad distinta de la pelota
 #en cada ejecución del juego
-speed = [randint(3,6),randint(3,6)]
+speed = [randint(2,4),randint(2,4)]
 ballrect.move_ip(0,0)
 
 barra = pygame.image.load("bate.png")
@@ -22,6 +22,7 @@ barrarect.move_ip(600,600)
 golpes = 4
 golpes_barra = 0
 fuente = pygame.font.Font(None, 36)
+
 
 jugando = True
 while jugando:
