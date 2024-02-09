@@ -13,7 +13,7 @@ ball = pygame.image.load("ball.png")
 ballrect = ball.get_rect()
 #Nos introduce una velocidad distinta de la pelota
 #en cada ejecución del juego
-speed = [randint(2,4),randint(2,4)]
+speed = [randint(2,5),randint(2,5)]
 ballrect.move_ip(0,0)
 
 barra = pygame.image.load("bate.png")
