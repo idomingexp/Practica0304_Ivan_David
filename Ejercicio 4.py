@@ -23,9 +23,20 @@ golpes = 4
 golpes_barra = 0
 fuente = pygame.font.Font(None, 36)
 
+ladrillo1 = pygame.image.load("Ladrillo1.png")
+ladrillo1rect = ladrillo1.get_rect()
+ladrillos = []
+filas = 6
+columnas = 6
+for y in range(filas):
+    ladrilloY = y * ladrillo1rect[3]
+    for x in range(columnas):
+        ladrilloX = x * ladrillo1rect[2]
+        ladrillos.append((ladrilloX, ladrilloY))
 
 jugando = True
 while jugando:
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             jugando = False
@@ -37,6 +48,7 @@ while jugando:
 
     if barrarect.colliderect(ballrect):
         speed[1] = -speed[1]
+        speed[1] *= 1.2
         #Aquí hacemos que cada 4 golpes la velocidad de la bola
         #aumente un 20 por ciento 
         golpes_barra += 1
@@ -60,8 +72,10 @@ while jugando:
         ventana.blit(texto, [texto_x, texto_y])
         
     else:
-        ventana.fill((252, 243, 207))
+        
         ventana.blit(fondo, (0,0))
+        for l in ladrillos:
+            ventana.blit(ladrillo1, l)
         ventana.blit(ball, ballrect)
         ventana.blit(barra, barrarect)
 
@@ -69,7 +83,7 @@ while jugando:
        barrarect = barrarect.move(4,0)
     if barrarect.right > 1200:
         barrarect = barrarect.move(-4,0)
-    
+
     pygame.display.flip()
     pygame.time.Clock().tick(144)
 
