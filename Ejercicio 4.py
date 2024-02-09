@@ -38,7 +38,7 @@ while jugando:
         speed[1] = -speed[1]
         #Aquí hacemos que cada 4 golpes la velocidad de la bola
         #aumente un 20 por ciento 
-        golpes_barra = golpes_barra + 1
+        golpes_barra += 1
         if golpes_barra % golpes == 0:
             speed[0] *= 1.2
 
