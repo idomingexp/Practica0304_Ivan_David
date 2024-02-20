@@ -61,7 +61,7 @@ while jugando:
             jugando = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE and speed == [0, 0]:  # Si se presiona la barra espaciadora y la bola está quieta
-                speed = [randint(2, 4), randint(2, 4)]  # Asigna una velocidad aleatoria a la bola
+                speed = [randint(-4, 4), randint(-4, 4)]  # Asigna una velocidad aleatoria a la bola
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
         barrarect = barrarect.move(-4,0)
@@ -75,7 +75,7 @@ while jugando:
         #aumente un 5 por ciento 
         golpes_barra += 1
         if golpes_barra % golpes == 0:
-            speed[0] *= 1.05
+            speed[0] *= 1.1
 
     ballrect = ballrect.move(speed)
     if ballrect.left < 0 or ballrect.right > ventana.get_width():
