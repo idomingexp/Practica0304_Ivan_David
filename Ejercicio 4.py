@@ -69,6 +69,7 @@ class Ladrillo3(Ladrillo):
 class Ladrillo4(Ladrillo):
     def __init__(self, color, width, height):
         super().__init__(color, width, height)
+        self.hits = 0
 #Cargamos la imagen de la bedrock
         self.image = pygame.image.load("ladrillo4.png")
 
@@ -76,10 +77,6 @@ class Ladrillo4(Ladrillo):
         if self.hits == 0:
             self.hits += 1
             self.image = pygame.image.load("ladrillo4.png")
-        else:
-
-            self.hits += 1
-            super().golpeado()
 
 # Grupo de ladrillos
 grupo_ladrillos = pygame.sprite.Group()
