@@ -1,58 +1,98 @@
 import pygame
-from random import randint
+from random import randint, choice
 
-#Nos indica la separación entre los ladrillos
-hueco_x = 600 / 6 + 600 / 36
-#creamos la clase ladrillo
-class Ladrillo:
-    def __init__(self, imagen, filas, columnas):
-        self.__imagen = pygame.image.load(imagen)
-        self.__rect = self.__imagen.get_rect()
-        self.__ladrillos = []
+class Ladrillo(pygame.sprite.Sprite):
+    def __init__(self, color, width, height):
+        super().__init__()
+        self.image = pygame.Surface([width, height])
+        self.image.fill(color)
+        self.rect = self.image.get_rect()
+        self.image = pygame.image.load("ladrillo1.png")
 
-        for y in range(filas):
-            ladrilloY = y * (self.__rect.height + 20)
-            for x in range(columnas):
-                ladrilloX = x * (self.__rect.width + hueco_x)
-                self.__ladrillos.append((ladrilloX, ladrilloY))
+    def golpeado(self):
+        self.kill()
 
-    @property
-    def imagen(self):
-        return self.__imagen
-    
-    @imagen.setter
-    def imagen(self, valor):
-        self.__imagen = valor
+    def check_collision(self, ball_rect):
+        if self.rect.colliderect(ball_rect):
+            self.golpeado()
+            if speed[0] < 0:
+                speed[0] = abs(speed[0])
+            else:
+                speed[0] = -abs(speed[0])
+            if speed[1] < 0:
+                speed[1] = abs(speed[1])
+            else:
+                speed[1] = -abs(speed[1])
 
-    def dibujar_ladrillos(self, ventana):
-        for pos in self.__ladrillos:
-            ventana.blit(self.__imagen, pos)
+class Ladrillo2(Ladrillo):
+    def __init__(self, color, width, height):
+        super().__init__(color, width, height)
+        self.hits = 0
+        self.image = pygame.image.load("ladrillo2.png")
+    def golpeado(self):
+        if self.hits == 0:
+            self.hits += 1
+            self.image = pygame.image.load("ladrillo1.png")
 
-# Inicialización de Pygame
+        else:
+            super().golpeado()
+
+class Ladrillo3(Ladrillo):
+    def __init__(self, color, width, height):
+        super().__init__(color, width, height)
+        self.hits = 0
+        self.image = pygame.image.load("ladrillo3.png")
+    def golpeado(self):
+        if self.hits == 0:
+            self.hits += 1
+            self.image = pygame.image.load("ladrillo2.png")
+        elif self.hits == 1:
+            self.hits += 1
+            self.image = pygame.image.load("ladrillo1.png")
+
+        else:
+            super().golpeado()
+
+class Ladrillo4(Ladrillo):
+    def __init__(self, color, width, height):
+        super().__init__(color, width, height)
+        self.hits = 0
+        self.image = pygame.image.load("ladrillo4.png")
+    def golpeado(self):
+        if self.hits == 0:
+            self.hits += 1
+            self.image = pygame.image.load("ladrillo4.png")
+        else:
+            self.hits += 1
+            self.image = pygame.image.load("ladrillo4.png")
+
+grupo_ladrillos = pygame.sprite.Group()
+
+for j in range(7):
+    for i in range(10):
+        ladrillo_class = choice([Ladrillo, Ladrillo2, Ladrillo3])
+        ladrillo = ladrillo_class((255, 0, 0), 100, 20)
+        ladrillo.rect.x = i * 155
+        ladrillo.rect.y = j * 50
+        grupo_ladrillos.add(ladrillo)
+
 pygame.init()
 ventana = pygame.display.set_mode((1200, 673))
 pygame.display.set_caption("Ejemplo 4")
 
-#Cargamos el fondo de la ventana
 fondo = pygame.image.load("fondo.jpg")
 ventana.blit(fondo, (0,0))
 game_over = pygame.image.load("game-over.png")
 ball = pygame.image.load("ball.png")
 ballrect = ball.get_rect()
-#Nos introduce una velocidad distinta de la pelota
-#en cada ejecución del juego
 speed = [0,0]
 ballrect.move_ip(600,336)
-
+golpes_barra = 0
+golpes = 4
 barra = pygame.image.load("bate.png")
 barrarect = barra.get_rect()
 barrarect.move_ip(600,600)
-golpes = 4
-golpes_barra = 0
 fuente = pygame.font.Font(None, 36)
-
-# Crear instancia de la clase Ladrillo
-ladrillo = Ladrillo("Ladrillo1.png", 6, 6)
 
 jugando = True
 while jugando:
@@ -60,8 +100,9 @@ while jugando:
         if event.type == pygame.QUIT:
             jugando = False
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE and speed == [0, 0]:  # Si se presiona la barra espaciadora y la bola está quieta
-                speed = [randint(-4, 4), randint(-4, 4)]  # Asigna una velocidad aleatoria a la bola
+            if event.key == pygame.K_SPACE and speed == [0, 0]:
+                speed = [randint(2, 4), randint(2, 4)]
+
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
         barrarect = barrarect.move(-4,0)
@@ -71,8 +112,6 @@ while jugando:
     if barrarect.colliderect(ballrect):
         speed[1] = -speed[1]
         speed[1] *= 1.05
-        #Aquí hacemos que cada 4 golpes la velocidad de la bola
-        #aumente un 5 por ciento 
         golpes_barra += 1
         if golpes_barra % golpes == 0:
             speed[0] *= 1.1
@@ -82,30 +121,23 @@ while jugando:
         speed[0] = -speed[0]
     if ballrect.top < 0: 
         speed[1] = -speed[1]
-    #Nos indica que al tocar abajo ya no rebota más
+
     if ballrect.bottom > ventana.get_height():
         ventana.fill((0, 0, 0))
         ventana.blit(game_over, (0, 0))
-        #Aquí introduce el texto de perder
         texto = fuente.render("Has Muerto", True, (255,255,255))
         texto_rect = texto.get_rect()
         texto_x = ventana.get_width() / 2 - texto_rect.width / 2
         texto_y = ventana.get_height() / 2 - texto_rect.height / 2
         ventana.blit(texto, [texto_x, texto_y])
-        
+    
     else:
         ventana.blit(fondo, (0,0))
-        #Aquí tenemos las colisiones entre los ladrillos y la bola
-        for i, pos in enumerate(ladrillo._Ladrillo__ladrillos):
-            ladrillo_rect = pygame.Rect(pos, (ladrillo._Ladrillo__rect.width, ladrillo._Ladrillo__rect.height))
-            if ladrillo_rect.colliderect(ballrect):
-                speed[1] = -speed[1]
-                # Eliminar el ladrillo colisionado
-                del ladrillo._Ladrillo__ladrillos[i]
-                break
-        ladrillo.dibujar_ladrillos(ventana)
+        grupo_ladrillos.draw(ventana)
         ventana.blit(ball, ballrect)
         ventana.blit(barra, barrarect)
+        for ladrillo in grupo_ladrillos.sprites():
+            ladrillo.check_collision(ballrect)
 
     if barrarect.left < 0:
        barrarect = barrarect.move(4,0)
