@@ -151,7 +151,7 @@ while jugando:
         texto_x = ventana.get_width() / 2 - texto_rect.width / 2
         texto_y = ventana.get_height() / 2 - texto_rect.height / 2
         ventana.blit(texto, [texto_x, texto_y])
-#Dibujamos el fondo y cargamos los ladrillo, bola y barra    
+#Dibujamos el fondo y cargamos los ladrillos, bola y barra    
     else:
         ventana.blit(fondo, (0,0))
         grupo_ladrillos.draw(ventana)
