@@ -97,7 +97,7 @@ for y in range(7):
 # Inicialización de Pygame
 pygame.init()
 ventana = pygame.display.set_mode((1200, 673))
-pygame.display.set_caption("Ejemplo 4")
+pygame.display.set_caption("MINECRANOID")
 
 # Cargamos imagenes y otras variables
 fondo = pygame.image.load("fondo.jpg")
