@@ -126,9 +126,9 @@ while jugando:
 #Configuramos el movimiento del bate
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
-        barrarect = barrarect.move(-4,0)
+        barrarect = barrarect.move(-5,0)
     if keys[pygame.K_RIGHT]:
-        barrarect = barrarect.move(4,0)
+        barrarect = barrarect.move(5,0)
 #Comprobamos si la bola y el bate colisionan y cada 8 golpes subimos
 #la velocidad un 5%
     if barrarect.colliderect(ballrect):
@@ -161,9 +161,9 @@ while jugando:
             ladrillo.check_collision(ballrect)
 #Hacemos que la barra no salga de la ventana de juego
     if barrarect.left < 0:
-       barrarect = barrarect.move(4,0)
+       barrarect = barrarect.move(5,0)
     if barrarect.right > 1200:
-        barrarect = barrarect.move(-4,0)
+        barrarect = barrarect.move(-5,0)
 
     pygame.display.flip()
     pygame.time.Clock().tick(144)
