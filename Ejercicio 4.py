@@ -20,13 +20,13 @@ class Ladrillo(pygame.sprite.Sprite):
             self.golpeado()
 #Hacemos que la bola al golpear con el ladrillo rebote
             if speed[0] < 0:
-                speed[0] = abs(speed[0])
-            else:
                 speed[0] = -abs(speed[0])
+            if speed[0] > 0:
+                speed[0] = abs(speed[0])
             if speed[1] < 0:
                 speed[1] = abs(speed[1])
-            else:
-                speed[1] = -abs(speed[1])
+            if speed[1] > 0:
+                speed[1] = abs(speed[1])
 
 #Definimos la clase del ladrillo de 2 vidas
 class Ladrillo2(Ladrillo):
@@ -108,7 +108,7 @@ ballrect = ball.get_rect()
 speed = [0,0]
 ballrect.move_ip(600,336)
 golpes_barra = 0
-golpes = 4
+golpes = 8
 barra = pygame.image.load("bate.png")
 barrarect = barra.get_rect()
 barrarect.move_ip(600,600)
@@ -119,6 +119,7 @@ while jugando:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             jugando = False
+#Hasta que no pulsemos el espacio no comienza el juego
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE and speed == [0, 0]:
                 speed = [randint(2, 4), randint(2, 4)]
@@ -128,7 +129,7 @@ while jugando:
         barrarect = barrarect.move(-4,0)
     if keys[pygame.K_RIGHT]:
         barrarect = barrarect.move(4,0)
-#Comprobamos si la bola y el bate colisionan y cada 4 golpes subimos
+#Comprobamos si la bola y el bate colisionan y cada 8 golpes subimos
 #la velocidad un 5%
     if barrarect.colliderect(ballrect):
         speed[1] = -speed[1]
